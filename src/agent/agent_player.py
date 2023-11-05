@@ -26,5 +26,5 @@ class AgentPlayer(Agent):
         if self.instancer.input[pygame.K_DOWN] == False and self.instancer.input[pygame.K_UP] == True:
             _v = -1
 
-        self.set_velocity(_h * 32.0, _v * 32.0)
+        self.set_velocity(_h * 3.0, _v * 3.0)
         super().update()
