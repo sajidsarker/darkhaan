@@ -1,10 +1,12 @@
 #!/usr/bin/python3
 
+import math
+
 from agent.agent import *
 
 class AgentPlayer(Agent):
-    def __init__(self, x: float, y: float) -> None:
-        super().__init__(x, y, '../assets/sprites/agent_player.png',
+    def __init__(self, x: float, y: float, z: float = 0.0) -> None:
+        super().__init__(x, y, z, '../assets/sprites/agent_player.png',
                          image_index=0.0,
                          image_speed=0.0,
                          image_width = 32.0,
@@ -14,17 +16,38 @@ class AgentPlayer(Agent):
         _h: int = 0
         _v: int = 0
 
-        if self.instancer.input[pygame.K_RIGHT] == True and self.instancer.input[pygame.K_LEFT] == False:
+        if self.instancer.key_pressed['k_right'] == True and self.instancer.key_pressed['k_left'] == False:
             _h = 1
 
-        if self.instancer.input[pygame.K_RIGHT] == False and self.instancer.input[pygame.K_LEFT] == True:
+        if self.instancer.key_pressed['k_right'] == False and self.instancer.key_pressed['k_left'] == True:
             _h = -1
 
-        if self.instancer.input[pygame.K_DOWN] == True and self.instancer.input[pygame.K_UP] == False:
+        if self.instancer.key_down['k_down'] == True and self.instancer.key_down['k_up'] == False:
             _v = 1
 
-        if self.instancer.input[pygame.K_DOWN] == False and self.instancer.input[pygame.K_UP] == True:
+        if self.instancer.key_down['k_down'] == False and self.instancer.key_down['k_up'] == True:
             _v = -1
 
-        self.set_velocity(_h * 3.0, _v * 3.0)
-        super().update()
+        if self.position[0] % 16.0 == 0 and self.position[1] % 16.0 == 0 and self.position[2] % 90.0 == 0:
+            self.set_velocity(0.0, 0.0, 0.0)
+
+            if abs(_h) > 0:
+                self.set_velocity(0.0, 0.0, _h * 5.0)
+                _v = 0
+
+            if abs(_v) > 0:
+                _x: float = 3.0 * math.cos(self.position[2] * _v * math.pi / -180.0)
+                _y: float = 3.0 * math.sin(self.position[2] * _v * math.pi / -180.0)
+                self.set_velocity(_x, _y, 0.0)
+
+        self.position[0] += self.velocity[0]
+        self.position[1] += self.velocity[1]
+        self.position[2] += self.velocity[2]
+
+        if self.position[2] < 0.0:
+            self.position[2] += 360.0
+
+        if self.position[2] >= 360.0:
+            self.position[2] -= 360.0
+
+        self.sprite.rect.center = (self.position[0], self.position[1])

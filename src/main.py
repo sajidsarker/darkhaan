@@ -1,14 +1,15 @@
 #!/usr/bin/python3
 
-from typing import Tuple
-from agent.agent_spawner import *
+from typing import Tuple, Dict
+from agent.agent_manager import *
+from ui.ui_helper import *
 
 GAME = 'Darkhaan'
 VERSION = '1.0.0'
 FRAMES_PER_SECOND: float = 60.0
 RESOLUTION: Tuple[int, int] = (640, 480)
 
-print('[Info] Launching ' + GAME + '-v' + VERSION)
+print('[!] Launching ' + GAME + '-v' + VERSION)
 
 import pygame
 
@@ -16,55 +17,120 @@ class Game:
     is_running: bool = True
     delta_time: float = 0.0
 
-    agent_spawner: AgentSpawner
+    key_down: Dict[str, bool]
+    key_pressed: Dict[str, bool]
+    key_released: Dict[str, bool]
+
+    agent_manager: AgentManager
 
     def __init__(self):
         pygame.init()
         pygame.display.set_caption(GAME + '-v' + VERSION)
 
-        print('[Info] Renderer Initialisation...')
+        print('[!] Input Initialisation...')
+        self.key_down = {
+            'k_left': False,
+            'k_right': False,
+            'k_up': False,
+            'k_down': False
+        }
+        self.key_pressed = {
+            'k_left': False,
+            'k_right': False,
+            'k_up': False,
+            'k_down': False
+        }
+        self.key_released = {
+            'k_left': False,
+            'k_right': False,
+            'k_up': False,
+            'k_down': False
+        }
+
+        print('[!] Renderer Initialisation...')
         self.screen = pygame.display.set_mode(RESOLUTION)
 
-        print('[Info] Clock Initialisation...')
+        print('[!] Clock Initialisation...')
         self.clock = pygame.time.Clock()
 
-        print('[Info] Agent Spawner Initialisation...')
-        self.agent_spawner = AgentSpawner()
-        self.agent_spawner.instancer = self
+        print('[!] Agent Spawner Initialisation...')
+        self.agent_manager = AgentManager()
+        self.agent_manager.instancer = self
 
-        print('[Info] Agent Initialisation...')
-        self.agent_spawner.spawn(AgentPlayer, 64.0, RESOLUTION[1] * 0.5)
-        #self.agent_spawner.spawn(AgentEnemyA, 128.0, 32.0)
-        #self.agent_spawner.spawn(AgentEnemyB, 128.0, 64.0)
+        print('[!] Agent Initialisation...')
+        self.agent_manager.spawn(AgentPlayer, 32.0, 32.0, 0.0)
+        #self.agent_manager.spawn(AgentEnemyA, 128.0, 32.0)
+        #self.agent_manager.spawn(AgentEnemyB, 128.0, 64.0)
 
     def process_input(self) -> None:
+        self.key_down = {
+            'k_left': False,
+            'k_right': False,
+            'k_up': False,
+            'k_down': False
+        }
+        self.key_pressed = {
+            'k_left': False,
+            'k_right': False,
+            'k_up': False,
+            'k_down': False
+        }
+        self.key_released = {
+            'k_left': False,
+            'k_right': False,
+            'k_up': False,
+            'k_down': False
+        }
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.is_running = False
 
-        self.input = pygame.key.get_pressed()
+            if event.type == pygame.KEYDOWN:
+                self.key_pressed['k_left'] = (event.key == pygame.K_LEFT)
+                self.key_pressed['k_right'] = (event.key == pygame.K_RIGHT)
+                self.key_pressed['k_up'] = (event.key == pygame.K_UP)
+                self.key_pressed['k_down'] = (event.key == pygame.K_DOWN)
+
+            if event.type == pygame.KEYUP:
+                self.key_released['k_left'] = (event.key == pygame.K_LEFT)
+                self.key_released['k_right'] = (event.key == pygame.K_RIGHT)
+                self.key_released['k_up'] = (event.key == pygame.K_UP)
+                self.key_released['k_down'] = (event.key == pygame.K_DOWN)
+
+        _key_down = pygame.key.get_pressed()
+        self.key_down['k_left'] = _key_down[pygame.K_LEFT]
+        self.key_down['k_right'] = _key_down[pygame.K_RIGHT]
+        self.key_down['k_up'] = _key_down[pygame.K_UP]
+        self.key_down['k_down'] = _key_down[pygame.K_DOWN]
 
     def update(self) -> None:
-        for entity in self.agent_spawner.entities:
+        for entity in self.agent_manager.entities:
             entity.update(self.delta_time)
 
     def render(self) -> None:
         self.screen.fill('teal')
-        self.agent_spawner.sprites.draw(self.screen)
+        self.agent_manager.sprites.draw(self.screen)
+        draw_text((32.0, 32.0), '{}-v{}'.format(GAME, VERSION), WHITE, self.screen)
+        draw_text((32.0, 48.0), 'LIFE', WHITE, self.screen)
+        draw_text((32.0, 64.0), 'MAGIC', WHITE, self.screen)
+        draw_text((32.0, 80.0), 'EXP', WHITE, self.screen)
+        draw_text((32.0, 96.0), str(1 / (0.0001 + self.delta_time)), WHITE, self.screen)
+        draw_text((32.0, 112.0), str(self.agent_manager.entities[0].position), WHITE, self.screen)
         pygame.display.flip()
 
 def main():
     game = Game()
 
-    print('[Info] Main Loop Initialisation...')
+    print('[!] Main Loop Initialisation...')
     while (game.is_running):
         game.process_input()
         game.update()
         game.render()
         game.delta_time = game.clock.tick(FRAMES_PER_SECOND) / 1000.0
 
-    print('[Info] Main Loop Ended...')
-    print('[Info] Exiting Game...')
+    print('[!] Main Loop Ended...')
+    print('[!] Exiting Game...')
     pygame.quit()
 
 if __name__ == "__main__":
