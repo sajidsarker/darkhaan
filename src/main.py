@@ -15,6 +15,8 @@ import pygame
 
 class Game:
     is_running: bool = True
+
+    clock = None
     delta_time: float = 0.0
 
     key_down: Dict[str, bool]
@@ -22,6 +24,8 @@ class Game:
     key_released: Dict[str, bool]
 
     agent_manager: AgentManager
+
+    screen = None
 
     def __init__(self):
         pygame.init()
@@ -112,14 +116,11 @@ class Game:
         self.screen.fill('teal')
         self.agent_manager.sprites.draw(self.screen)
         draw_text((32.0, 32.0), '{}-v{}'.format(GAME, VERSION), WHITE, self.screen)
-        draw_text((32.0, 48.0), 'LIFE', WHITE, self.screen)
-        draw_text((32.0, 64.0), 'MAGIC', WHITE, self.screen)
-        draw_text((32.0, 80.0), 'EXP', WHITE, self.screen)
-        draw_text((32.0, 96.0), str(1 / (0.0001 + self.delta_time)), WHITE, self.screen)
-        draw_text((32.0, 112.0), str(self.agent_manager.entities[0].position), WHITE, self.screen)
+        draw_text((32.0, 48.0), str(1 / (0.0001 + self.delta_time)), WHITE, self.screen)
+        draw_text((32.0, 64.0), str(self.agent_manager.entities[0].position), WHITE, self.screen)
         pygame.display.flip()
 
-def main():
+def main() -> None:
     game = Game()
 
     print('[!] Main Loop Initialisation...')

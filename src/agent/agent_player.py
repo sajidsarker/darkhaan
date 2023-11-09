@@ -40,9 +40,8 @@ class AgentPlayer(Agent):
                 _y: float = 3.0 * math.sin(self.position[2] * _v * math.pi / -180.0)
                 self.set_velocity(_x, _y, 0.0)
 
-        self.position[0] += self.velocity[0]
-        self.position[1] += self.velocity[1]
-        self.position[2] += self.velocity[2]
+        for i in range(len(self.position)):
+            self.position[i] += self.velocity[i]
 
         if self.position[2] < 0.0:
             self.position[2] += 360.0

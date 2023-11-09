@@ -37,7 +37,7 @@ class Agent:
         self.velocity[2] = vz
 
     def update(self) -> None:
-        self.position[0] += self.velocity[0]
-        self.position[1] += self.velocity[1]
-        self.position[2] += self.velocity[2]
+        for i in range(len(self.position)):
+            self.position[i] += self.velocity[i]
+
         self.sprite.rect.center = (self.position[0], self.position[1])
