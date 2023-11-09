@@ -17,10 +17,10 @@ class AgentPlayer(Agent):
         _v: int = 0
 
         if self.instancer.key_pressed['k_right'] == True and self.instancer.key_pressed['k_left'] == False:
-            _h = 1
+            _h = -1
 
         if self.instancer.key_pressed['k_right'] == False and self.instancer.key_pressed['k_left'] == True:
-            _h = -1
+            _h = 1
 
         if self.instancer.key_down['k_down'] == True and self.instancer.key_down['k_up'] == False:
             _v = 1
@@ -36,8 +36,8 @@ class AgentPlayer(Agent):
                 _v = 0
 
             if abs(_v) > 0:
-                _x: float = 3.0 * math.cos(self.position[2] * _v * math.pi / -180.0)
-                _y: float = 3.0 * math.sin(self.position[2] * _v * math.pi / -180.0)
+                _x: float = 3.0 * _v * math.cos(self.position[2] *  math.pi / -180.0)
+                _y: float = 3.0 * _v * math.sin(self.position[2] *  math.pi / -180.0)
                 self.set_velocity(_x, _y, 0.0)
 
         for i in range(len(self.position)):

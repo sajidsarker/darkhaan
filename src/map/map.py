@@ -28,12 +28,10 @@ class Map:
         self.spawn_position = (int(_file.readline()), int(_file.readline()))
 
         for i in range(self.height):
-            _datum: str = _file.readline()
-            self.data['collisions'].append(_datum)
+            self.data['collisions'].append(_file.readline().split(','))
 
         for i in range(self.height):
-            _datum: str = _file.readline()
-            self.data['tiles'].append(_datum)
+            self.data['tiles'].append(_file.readline().split(','))
 
         for i in range(self.height):
             self.data['fog'].append([])

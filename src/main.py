@@ -5,11 +5,11 @@ from agent.agent_manager import *
 from ui.ui_helper import *
 
 GAME = 'Darkhaan'
-VERSION = '1.0.0'
+VERSION = '0.1.0-a1'
 FRAMES_PER_SECOND: float = 60.0
 RESOLUTION: Tuple[int, int] = (640, 480)
 
-print('[!] Launching ' + GAME + '-v' + VERSION)
+print('[!] Isfahan Engine: Launching ' + GAME + '-v' + VERSION)
 
 import pygame
 
@@ -62,17 +62,9 @@ class Game:
         self.agent_manager.instancer = self
 
         print('[!] Agent Initialisation...')
-        self.agent_manager.spawn(AgentPlayer, 32.0, 32.0, 0.0)
-        #self.agent_manager.spawn(AgentEnemyA, 128.0, 32.0)
-        #self.agent_manager.spawn(AgentEnemyB, 128.0, 64.0)
+        self.agent_manager.spawn(AgentPlayer, 32.0, 32.0, 180.0)
 
     def process_input(self) -> None:
-        self.key_down = {
-            'k_left': False,
-            'k_right': False,
-            'k_up': False,
-            'k_down': False
-        }
         self.key_pressed = {
             'k_left': False,
             'k_right': False,
@@ -116,7 +108,7 @@ class Game:
         self.screen.fill('teal')
         self.agent_manager.sprites.draw(self.screen)
         draw_text((32.0, 32.0), '{}-v{}'.format(GAME, VERSION), WHITE, self.screen)
-        draw_text((32.0, 48.0), str(1 / (0.0001 + self.delta_time)), WHITE, self.screen)
+        draw_text((32.0, 48.0), '{} ms'.format(str(self.delta_time * 1000.0)), WHITE, self.screen)
         draw_text((32.0, 64.0), str(self.agent_manager.entities[0].position), WHITE, self.screen)
         pygame.display.flip()
 
