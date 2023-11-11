@@ -18,7 +18,7 @@ class Agent:
         self.position = [x, y, z]
         self.velocity = [0.0, 0.0, 0.0]
         self.sprite = Sprite(sprite_index, image_index, image_speed, image_width, image_height)
-        self.sprite.rect.center = (x, y)
+        self.sprite.rect.center = (x + self.sprite.image_width * 0.5, y + self.sprite.image_height * 0.5)
 
     def get_position(self) -> List[float]:
         return self.position
@@ -40,4 +40,4 @@ class Agent:
         for i in range(len(self.position)):
             self.position[i] += self.velocity[i]
 
-        self.sprite.rect.center = (self.position[0], self.position[1])
+        self.sprite.rect.center = (self.position[0] + self.sprite.image_width * 0.5, self.position[1] + self.sprite.image_height * 0.5)

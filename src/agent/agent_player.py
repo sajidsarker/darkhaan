@@ -28,7 +28,7 @@ class AgentPlayer(Agent):
         if self.instancer.key_down['k_down'] == False and self.instancer.key_down['k_up'] == True:
             _v = -1
 
-        if self.position[0] % 16.0 == 0 and self.position[1] % 16.0 == 0 and self.position[2] % 90.0 == 0:
+        if self.position[0] % 32.0 == 0 and self.position[1] % 32.0 == 0 and self.position[2] % 90.0 == 0:
             self.set_velocity(0.0, 0.0, 0.0)
 
             if abs(_h) > 0:
@@ -36,12 +36,15 @@ class AgentPlayer(Agent):
                 _v = 0
 
             if abs(_v) > 0:
-                _x: float = 3.0 * _v * math.cos(self.position[2] *  math.pi / -180.0)
-                _y: float = 3.0 * _v * math.sin(self.position[2] *  math.pi / -180.0)
+                _x: float = 4.0 * _v * math.cos(self.position[2] *  math.pi / -180.0)
+                _y: float = 4.0 * _v * math.sin(self.position[2] *  math.pi / -180.0)
                 self.set_velocity(_x, _y, 0.0)
 
         for i in range(len(self.position)):
             self.position[i] += self.velocity[i]
+
+        self.position[0] = max(32.0, min(self.position[0], 640.0 - 64.0))
+        self.position[1] = max(32.0, min(self.position[1], 480.0 - 64.0))
 
         if self.position[2] < 0.0:
             self.position[2] += 360.0
@@ -49,4 +52,4 @@ class AgentPlayer(Agent):
         if self.position[2] >= 360.0:
             self.position[2] -= 360.0
 
-        self.sprite.rect.center = (self.position[0], self.position[1])
+        self.sprite.rect.center = (self.position[0] + self.sprite.image_width * 0.5, self.position[1] + self.sprite.image_height * 0.5)

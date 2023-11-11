@@ -2,6 +2,7 @@
 
 from typing import Tuple, Dict
 from agent.agent_manager import *
+from map.map import *
 from ui.ui_helper import *
 
 GAME = 'Darkhaan'
@@ -24,6 +25,7 @@ class Game:
     key_released: Dict[str, bool]
 
     agent_manager: AgentManager
+    map: Map
 
     screen = None
 
@@ -51,6 +53,9 @@ class Game:
             'k_down': False
         }
 
+        print('[!] Map Initialisation...')
+        self.map = Map('../assets/maps/dungeon0.map')
+
         print('[!] Renderer Initialisation...')
         self.screen = pygame.display.set_mode(RESOLUTION)
 
@@ -62,7 +67,7 @@ class Game:
         self.agent_manager.instancer = self
 
         print('[!] Agent Initialisation...')
-        self.agent_manager.spawn(AgentPlayer, 32.0, 32.0, 180.0)
+        self.agent_manager.spawn(AgentPlayer, self.map.spawn_position[0], self.map.spawn_position[1], 180.0)
 
     def process_input(self) -> None:
         self.key_pressed = {
@@ -104,12 +109,20 @@ class Game:
         for entity in self.agent_manager.entities:
             entity.update(self.delta_time)
 
+        self.map.update(self.agent_manager.entities[0].get_position())
+
     def render(self) -> None:
         self.screen.fill('teal')
+
+        # Singleton Rendering
         self.agent_manager.sprites.draw(self.screen)
-        draw_text((32.0, 32.0), '{}-v{}'.format(GAME, VERSION), WHITE, self.screen)
-        draw_text((32.0, 48.0), '{} ms'.format(str(self.delta_time * 1000.0)), WHITE, self.screen)
-        draw_text((32.0, 64.0), str(self.agent_manager.entities[0].position), WHITE, self.screen)
+        self.map.render(self.agent_manager.entities[0].get_position(), self.screen)
+
+        # Debug Information
+        draw_text((16.0, 96.0), '{}-v{}'.format(GAME, VERSION), WHITE, self.screen)
+        draw_text((16.0, 112.0), '{} ms'.format(str(self.delta_time * 1000.0)), WHITE, self.screen)
+        draw_text((16.0, 128.0), str(self.agent_manager.entities[0].position), WHITE, self.screen)
+
         pygame.display.flip()
 
 def main() -> None:
