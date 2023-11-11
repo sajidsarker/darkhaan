@@ -2,6 +2,9 @@
 
 from typing import List
 
+DIMENSION: float = 64.0
+MAXIMUM_DEPTH: float = 30.0 * DIMENSION
+
 class Raycast:
     direction: float
 

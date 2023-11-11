@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 
 from typing import List, Dict, Tuple
-from ui.ui_helper import *
+from ui.ui import *
+
+DIMENSION: float = 64.0
 
 class Map:
     id: int
@@ -52,13 +54,13 @@ class Map:
         pass
 
     def reveal(self, position: List[int]) -> None:
-        _x: int = int(position[0] / 32.0)
-        _y: int = int(position[1] / 32.0)
+        _x: int = int(position[0] / DIMENSION)
+        _y: int = int(position[1] / DIMENSION)
         self.data['fog'][_y][_x] = True
-        self.data['fog'][max(_y-1, 0)][_x] = True
-        self.data['fog'][min(_y+1, self.height-1)][_x] = True
-        self.data['fog'][_y][max(_x-1, 0)] = True
-        self.data['fog'][_y][min(_x+1, self.width-1)] = True
+        self.data['fog'][max(_y - 1, 0)][_x] = True
+        self.data['fog'][min(_y + 1, self.height - 1)][_x] = True
+        self.data['fog'][_y][max(_x - 1, 0)] = True
+        self.data['fog'][_y][min(_x + 1, self.width - 1)] = True
 
     def update(self, position: List[int]) -> None:
         self.reveal(position)
@@ -66,8 +68,8 @@ class Map:
     def render(self, position: List[int], screen) -> None:
         _w: int = 6
         _h: int = 4
-        _x: int = int(position[0] / 32.0)
-        _y: int = int(position[1] / 32.0)
+        _x: int = int(position[0] / DIMENSION)
+        _y: int = int(position[1] / DIMENSION)
         _offset: Tuple[float] = (16.0, 16.0)
 
         i, j = 0, 0
@@ -83,10 +85,3 @@ class Map:
                         draw_sprite((_offset[0] + 8.0 * i, _offset[1] + 8.0 * j), '../assets/sprites/minimap_cell_empty.png', screen)
                 i += 1
             j += 1
-
-        '''
-        for row in range(self.height):
-            for col in range(self.width):
-                if self.data['collisions'][row][col] == 1:
-                    draw_sprite((col * 32.0, row * 32.0), '../assets/sprites/agent_player.png', screen)
-        '''

@@ -3,6 +3,8 @@
 from typing import List
 from sprite.sprite import *
 
+DIMENSION: float = 64.0
+
 class Agent:
     instancer = None
     position: List[float]
@@ -13,8 +15,8 @@ class Agent:
                  sprite_index: str,
                  image_index: float = 0.0,
                  image_speed: float = 1.0,
-                 image_width: float = 32.0,
-                 image_height: float = 32.0) -> None:
+                 image_width: float = DIMENSION,
+                 image_height: float = DIMENSION) -> None:
         self.position = [x, y, z]
         self.velocity = [0.0, 0.0, 0.0]
         self.sprite = Sprite(sprite_index, image_index, image_speed, image_width, image_height)

@@ -4,13 +4,15 @@ import math
 
 from agent.agent import *
 
+DIMENSION: float = 64.0
+
 class AgentPlayer(Agent):
     def __init__(self, x: float, y: float, z: float = 0.0) -> None:
         super().__init__(x, y, z, '../assets/sprites/agent_player.png',
-                         image_index=0.0,
-                         image_speed=0.0,
-                         image_width = 32.0,
-                         image_height = 32.0)
+                         image_index = 0.0,
+                         image_speed = 0.0,
+                         image_width = DIMENSION,
+                         image_height = DIMENSION)
 
     def update(self, delta_time: float) -> None:
         _h: int = 0
@@ -28,7 +30,7 @@ class AgentPlayer(Agent):
         if self.instancer.key_down['k_down'] == False and self.instancer.key_down['k_up'] == True:
             _v = -1
 
-        if self.position[0] % 32.0 == 0 and self.position[1] % 32.0 == 0 and self.position[2] % 90.0 == 0:
+        if self.position[0] % DIMENSION == 0 and self.position[1] % DIMENSION == 0 and self.position[2] % 90.0 == 0:
             self.set_velocity(0.0, 0.0, 0.0)
 
             if abs(_h) > 0:
@@ -36,12 +38,12 @@ class AgentPlayer(Agent):
                 _v = 0
 
             if abs(_v) > 0:
-                _x: float = 4.0 * _v * math.cos(self.position[2] *  math.pi / -180.0)
-                _y: float = 4.0 * _v * math.sin(self.position[2] *  math.pi / -180.0)
+                _x: float = 8.0 * _v * math.cos(self.position[2] *  math.pi / -180.0)
+                _y: float = 8.0 * _v * math.sin(self.position[2] *  math.pi / -180.0)
                 _sx: int = int(self.position[0] / self.sprite.image_width)
                 _sy: int = int(self.position[1] / self.sprite.image_height)
-                _dx: int = int(_x / 4.0)
-                _dy: int = int(_y / 4.0)
+                _dx: int = int(_x / 8.0)
+                _dy: int = int(_y / 8.0)
 
                 if abs(_dx) > 0:
                     #print('X: {}->{}'.format(_sx, _dx))

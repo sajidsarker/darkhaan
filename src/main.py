@@ -3,31 +3,36 @@
 from typing import Tuple, Dict
 from map.map import *
 from camera.camera import *
+from texture.texture_cache import *
 from agent.agent_manager import *
-from ui.ui_helper import *
+from ui.ui import *
 
 GAME = 'Darkhaan'
 VERSION = '0.1.0-a1'
 FRAMES_PER_SECOND: float = 60.0
 RESOLUTION: Tuple[int] = (640, 480)
-PRECISION: int = 24
+DIMENSION: float = 64.0
+PRECISION: int = 120
 
 import pygame
 
 class Game:
     is_running: bool = True
+    debug_mode: bool = True
 
+    map: Map
+    camera: Camera
+    texture_cache: TextureCache
+    agent_manager: AgentManager
+
+    screen = None
     clock = None
+
     delta_time: float = 0.0
 
     key_down: Dict[str, bool]
     key_pressed: Dict[str, bool]
     key_released: Dict[str, bool]
-
-    agent_manager: AgentManager
-    map: Map
-
-    screen = None
 
     def __init__(self):
         pygame.init()
@@ -66,12 +71,15 @@ class Game:
         print('[!] Clock Initialisation...')
         self.clock = pygame.time.Clock()
 
+        print('[!] Loading Texture Cache...')
+        self.texture_cache = TextureCache('../assets/textures/')
+
         print('[!] Agent Spawner Initialisation...')
         self.agent_manager = AgentManager()
         self.agent_manager.instancer = self
 
         print('[!] Agent(s) Initialisation...')
-        self.agent_manager.spawn(AgentPlayer, self.map.spawn_position[0] * 32.0, self.map.spawn_position[1] * 32.0, 180.0)
+        self.agent_manager.spawn(AgentPlayer, self.map.spawn_position[0] * DIMENSION, self.map.spawn_position[1] * DIMENSION, 180.0)
 
     def process_input(self) -> None:
         self.key_pressed = {
@@ -123,9 +131,10 @@ class Game:
         self.camera.render(self.screen)
 
         # Debug Information
-        draw_text((16.0, 96.0), '{}-v{}'.format(GAME, VERSION), WHITE, self.screen)
-        draw_text((16.0, 112.0), '{} ms'.format(str(self.delta_time * 1000.0)), WHITE, self.screen)
-        draw_text((16.0, 128.0), str(self.agent_manager.entities[0].position), WHITE, self.screen)
+        if self.debug_mode == True:
+            draw_text((16.0, 96.0), '{}-v{}'.format(GAME, VERSION), WHITE, self.screen)
+            draw_text((16.0, 112.0), '{} ms'.format(str(self.delta_time * 1000.0)), WHITE, self.screen)
+            draw_text((16.0, 128.0), str(self.agent_manager.entities[0].position), WHITE, self.screen)
 
         pygame.display.flip()
 
