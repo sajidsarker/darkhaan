@@ -38,13 +38,25 @@ class AgentPlayer(Agent):
             if abs(_v) > 0:
                 _x: float = 4.0 * _v * math.cos(self.position[2] *  math.pi / -180.0)
                 _y: float = 4.0 * _v * math.sin(self.position[2] *  math.pi / -180.0)
-                self.set_velocity(_x, _y, 0.0)
+                _sx: int = int(self.position[0] / self.sprite.image_width)
+                _sy: int = int(self.position[1] / self.sprite.image_height)
+                _dx: int = int(_x / 4.0)
+                _dy: int = int(_y / 4.0)
+
+                if abs(_dx) > 0:
+                    #print('X: {}->{}'.format(_sx, _dx))
+                    if self.instancer.map.data['collisions'][_sy][_sx + _dx] == 0:
+                        self.set_velocity(_x, 0.0, 0.0)
+                        _dy = 0
+
+                if abs(_dy) > 0:
+                    #print('Y: {}->{}'.format(_sy, _dy))
+                    if self.instancer.map.data['collisions'][_sy + _dy][_sx] == 0:
+                        self.set_velocity(0.0, _y, 0.0)
+                        _dx = 0
 
         for i in range(len(self.position)):
             self.position[i] += self.velocity[i]
-
-        self.position[0] = max(32.0, min(self.position[0], 640.0 - 64.0))
-        self.position[1] = max(32.0, min(self.position[1], 480.0 - 64.0))
 
         if self.position[2] < 0.0:
             self.position[2] += 360.0

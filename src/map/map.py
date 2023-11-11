@@ -34,6 +34,11 @@ class Map:
         for i in range(self.height):
             self.data['tiles'].append(_file.readline().split(','))
 
+        for row in range(self.height):
+            for col in range(self.width):
+                self.data['collisions'][row][col] = int(self.data['collisions'][row][col])
+                self.data['tiles'][row][col] = int(self.data['tiles'][row][col])
+
         for i in range(self.height):
             self.data['fog'].append([])
             for j in range(self.width):
@@ -59,26 +64,29 @@ class Map:
         self.reveal(position)
 
     def render(self, position: List[int], screen) -> None:
-        '''
-        for row in range(0, self.height, 1):
-            for col in range(0, self.width, 1):
-                if self.data['fog'][row][col] == False:
-                    draw_sprite((col * 32.0, row * 32.0), '../assets/sprites/agent_player.png', screen)
-        '''
-
-        _w: int = 4
+        _w: int = 6
         _h: int = 4
         _x: int = int(position[0] / 32.0)
         _y: int = int(position[1] / 32.0)
         _offset: Tuple[float] = (16.0, 16.0)
+
         i, j = 0, 0
         for row in range(_y - _h, _y + _h, 1):
             i = 0
             for col in range(_x - _w, _x + _w, 1):
                 if row >= 0 and row <= self.height - 1 and col >= 0 and col <= self.width - 1:
-                    if self.data['fog'][row][col] == True:
-                        draw_sprite((_offset[0] + 8.0 * i, _offset[1] + 8.0 * j), '../assets/sprites/minimap_cell_empty.png', screen)
-                    else:
+                    if i == _w and j == _h:
+                        draw_sprite((_offset[0] + 8.0 * i, _offset[1] + 8.0 * j), '../assets/sprites/minimap_cell_centre.png', screen)
+                    elif self.data['collisions'][row][col] == 1:
                         draw_sprite((_offset[0] + 8.0 * i, _offset[1] + 8.0 * j), '../assets/sprites/minimap_cell_full.png', screen)
+                    else:
+                        draw_sprite((_offset[0] + 8.0 * i, _offset[1] + 8.0 * j), '../assets/sprites/minimap_cell_empty.png', screen)
                 i += 1
             j += 1
+
+        '''
+        for row in range(self.height):
+            for col in range(self.width):
+                if self.data['collisions'][row][col] == 1:
+                    draw_sprite((col * 32.0, row * 32.0), '../assets/sprites/agent_player.png', screen)
+        '''

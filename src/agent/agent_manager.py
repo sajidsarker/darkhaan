@@ -22,3 +22,10 @@ class AgentManager:
 
     def despawn(self, instance: Agent) -> None:
         pass
+
+    def update(self, delta_time) -> None:
+        for entity in self.entities:
+            entity.update(delta_time)
+
+    def render(self, screen) -> None:
+        self.sprites.draw(screen)

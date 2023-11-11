@@ -1,16 +1,16 @@
 #!/usr/bin/python3
 
 from typing import Tuple, Dict
-from agent.agent_manager import *
 from map.map import *
+from camera.camera import *
+from agent.agent_manager import *
 from ui.ui_helper import *
 
 GAME = 'Darkhaan'
 VERSION = '0.1.0-a1'
 FRAMES_PER_SECOND: float = 60.0
-RESOLUTION: Tuple[int, int] = (640, 480)
-
-print('[!] Isfahan Engine: Launching ' + GAME + '-v' + VERSION)
+RESOLUTION: Tuple[int] = (640, 480)
+PRECISION: int = 24
 
 import pygame
 
@@ -59,6 +59,10 @@ class Game:
         print('[!] Renderer Initialisation...')
         self.screen = pygame.display.set_mode(RESOLUTION)
 
+        print('[!] Camera Initialisation...')
+        self.camera = Camera(0.0, PRECISION)
+        self.camera.instancer = self
+
         print('[!] Clock Initialisation...')
         self.clock = pygame.time.Clock()
 
@@ -66,8 +70,8 @@ class Game:
         self.agent_manager = AgentManager()
         self.agent_manager.instancer = self
 
-        print('[!] Agent Initialisation...')
-        self.agent_manager.spawn(AgentPlayer, self.map.spawn_position[0], self.map.spawn_position[1], 180.0)
+        print('[!] Agent(s) Initialisation...')
+        self.agent_manager.spawn(AgentPlayer, self.map.spawn_position[0] * 32.0, self.map.spawn_position[1] * 32.0, 180.0)
 
     def process_input(self) -> None:
         self.key_pressed = {
@@ -106,17 +110,17 @@ class Game:
         self.key_down['k_down'] = _key_down[pygame.K_DOWN]
 
     def update(self) -> None:
-        for entity in self.agent_manager.entities:
-            entity.update(self.delta_time)
-
+        self.agent_manager.update(self.delta_time)
         self.map.update(self.agent_manager.entities[0].get_position())
+        self.camera.update(self.agent_manager.entities[0].position[2])
 
     def render(self) -> None:
         self.screen.fill('teal')
 
         # Singleton Rendering
-        self.agent_manager.sprites.draw(self.screen)
+        self.agent_manager.render(self.screen)
         self.map.render(self.agent_manager.entities[0].get_position(), self.screen)
+        self.camera.render(self.screen)
 
         # Debug Information
         draw_text((16.0, 96.0), '{}-v{}'.format(GAME, VERSION), WHITE, self.screen)
@@ -126,6 +130,7 @@ class Game:
         pygame.display.flip()
 
 def main() -> None:
+    print('[!] Isfahan Engine: Launching ' + GAME + '-v' + VERSION)
     game = Game()
 
     print('[!] Main Loop Initialisation...')
