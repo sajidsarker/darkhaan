@@ -14,3 +14,12 @@
 3. Role-Playing Attributes System
 4. Branching Conversation Trees
 5. Quest-Based Progression
+
+## Compiling
+In its current early alpha status, simply run `main.py` from **terminal**.
+
+```python
+git clone https://github.com/sajidsarker/darkhaan.git
+cd darkhaan/src
+python3 main.py
+```
