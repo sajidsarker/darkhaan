@@ -9,10 +9,10 @@ from ui.ui import *
 
 GAME = 'Darkhaan'
 VERSION = '0.1.0-a1'
+AUTHOR = '@sajidsarker'
 FRAMES_PER_SECOND: float = 60.0
 RESOLUTION: Tuple[int] = (640, 480)
 DIMENSION: float = 64.0
-PRECISION: int = 120
 
 import pygame
 
@@ -65,7 +65,7 @@ class Game:
         self.screen = pygame.display.set_mode(RESOLUTION)
 
         print('[!] Camera Initialisation...')
-        self.camera = Camera(0.0, PRECISION)
+        self.camera = Camera()
         self.camera.instancer = self
 
         print('[!] Clock Initialisation...')
