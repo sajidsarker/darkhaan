@@ -5,11 +5,12 @@ from typing import List
 import math
 
 class Raycast:
+    position: List[float]
     direction: float
 
-    def __init__(self, position: List[float], direction: float = 0.0):
+    def __init__(self, position: List[float]):
         self.position = position
-        self.direction = direction
+        self.direction = position[2]
 
     def cast(self, half_field_of_view: float,
                     half_height: float,
@@ -43,6 +44,6 @@ class Raycast:
 
             _angle += delta_angle
 
-    def update(self, position: List[float], direction: float) -> None:
+    def update(self, position: List[float]) -> None:
         self.position = position
-        self.direction = direction
+        self.direction = position[2]

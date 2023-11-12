@@ -5,13 +5,14 @@ from map.map import *
 from camera.camera import *
 from texture.texture_cache import *
 from agent.agent_manager import *
+from conversation.conversation_manager import *
 from ui.ui import *
 
 GAME = 'Darkhaan'
 VERSION = '0.1.0-a1'
 AUTHOR = '@sajidsarker'
 FRAMES_PER_SECOND: float = 60.0
-RESOLUTION: Tuple[int] = (640, 480)
+RESOLUTION: Tuple[int, int] = (640, 480)
 DIMENSION: float = 64.0
 
 import pygame
@@ -24,6 +25,7 @@ class Game:
     camera: Camera
     texture_cache: TextureCache
     agent_manager: AgentManager
+    conversation_manager: ConversationManager
 
     screen = None
     clock = None
@@ -65,7 +67,7 @@ class Game:
         self.screen = pygame.display.set_mode(RESOLUTION)
 
         print('[!] Camera Initialisation...')
-        self.camera = Camera([0.0, 0.0])
+        self.camera = Camera([0.0, 0.0, 0.0])
         self.camera.instancer = self
 
         print('[!] Clock Initialisation...')
@@ -80,6 +82,20 @@ class Game:
 
         print('[!] Agent(s) Initialisation...')
         self.agent_manager.spawn(AgentPlayer, self.map.spawn_position[0] * DIMENSION, self.map.spawn_position[1] * DIMENSION, 180.0)
+
+        print('[!] Conversation Tree Initialisation...')
+        self.conversation_manager = ConversationManager(
+            {
+                'conversation_0': {
+                    0: Dialogue('Narrator', 'START >>', 'Before you is a computer. What do you do?', [1, 2, 3]),
+                    1: Dialogue('Narrator', 'Turn on the computer.', 'It did not respond and stays inert.', [4]),
+                    2: Dialogue('Narrator', 'Check if the lid is warm.', 'It seems cold, like it has not been turned on in some time.', [4]),
+                    3: Dialogue('Narrator', 'Call tech support on your phone.', 'The line is busy and the call ends.', [4]),
+                    4: Dialogue('Narrator', 'CONTINUE >>', 'There is nothing to be done.', [])
+                }
+            }
+        )
+        self.conversation_manager.instancer = self
 
     def process_input(self) -> None:
         self.key_pressed = {
@@ -120,7 +136,10 @@ class Game:
     def update(self) -> None:
         self.agent_manager.update(self.delta_time)
         self.map.update(self.agent_manager.entities[0].get_position())
-        self.camera.update(self.agent_manager.entities[0].position[2])
+        self.camera.update(self.agent_manager.entities[0].get_position())
+
+        if self.key_pressed['k_down'] == True:
+            self.conversation_manager.play('conversation_0')
 
     def render(self) -> None:
         self.screen.fill('teal')
@@ -129,6 +148,7 @@ class Game:
         self.agent_manager.render(self.screen)
         self.map.render(self.agent_manager.entities[0].get_position(), self.screen)
         self.camera.render(self.screen)
+        self.conversation_manager.render(self.screen)
 
         # Debug Information
         if self.debug_mode == True:
