@@ -45,19 +45,22 @@ class Game:
             'k_left': False,
             'k_right': False,
             'k_up': False,
-            'k_down': False
+            'k_down': False,
+            'k_accept': False
         }
         self.key_pressed = {
             'k_left': False,
             'k_right': False,
             'k_up': False,
-            'k_down': False
+            'k_down': False,
+            'k_accept': False
         }
         self.key_released = {
             'k_left': False,
             'k_right': False,
             'k_up': False,
-            'k_down': False
+            'k_down': False,
+            'k_accept': False
         }
 
         print('[!] Map Initialisation...')
@@ -102,13 +105,15 @@ class Game:
             'k_left': False,
             'k_right': False,
             'k_up': False,
-            'k_down': False
+            'k_down': False,
+            'k_accept': False
         }
         self.key_released = {
             'k_left': False,
             'k_right': False,
             'k_up': False,
-            'k_down': False
+            'k_down': False,
+            'k_accept': False
         }
 
         for event in pygame.event.get():
@@ -120,25 +125,29 @@ class Game:
                 self.key_pressed['k_right'] = (event.key == pygame.K_RIGHT)
                 self.key_pressed['k_up'] = (event.key == pygame.K_UP)
                 self.key_pressed['k_down'] = (event.key == pygame.K_DOWN)
+                self.key_pressed['k_accept'] = (event.key == pygame.K_SPACE)
 
             if event.type == pygame.KEYUP:
                 self.key_released['k_left'] = (event.key == pygame.K_LEFT)
                 self.key_released['k_right'] = (event.key == pygame.K_RIGHT)
                 self.key_released['k_up'] = (event.key == pygame.K_UP)
                 self.key_released['k_down'] = (event.key == pygame.K_DOWN)
+                self.key_released['k_accept'] = (event.key == pygame.K_SPACE)
 
         _key_down = pygame.key.get_pressed()
         self.key_down['k_left'] = _key_down[pygame.K_LEFT]
         self.key_down['k_right'] = _key_down[pygame.K_RIGHT]
         self.key_down['k_up'] = _key_down[pygame.K_UP]
         self.key_down['k_down'] = _key_down[pygame.K_DOWN]
+        self.key_down['k_accept'] = _key_down[pygame.K_SPACE]
 
     def update(self) -> None:
         self.agent_manager.update(self.delta_time)
         self.map.update(self.agent_manager.entities[0].get_position())
         self.camera.update(self.agent_manager.entities[0].get_position())
+        self.conversation_manager.update()
 
-        if self.key_pressed['k_down'] == True:
+        if self.key_pressed['k_left'] == True:
             self.conversation_manager.play('conversation_0')
 
     def render(self) -> None:

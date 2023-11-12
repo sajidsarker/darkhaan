@@ -23,7 +23,8 @@ class ConversationManager:
         self.conversations[self.conversation_id][0].play()
 
     def update(self) -> None:
-        pass
+        if self.conversation_id != '':
+            self.conversations[self.conversation_id][self.dialogue_id].update()
 
     def render(self, screen) -> None:
         if self.conversation_id != '':
