@@ -65,7 +65,7 @@ class Game:
         self.screen = pygame.display.set_mode(RESOLUTION)
 
         print('[!] Camera Initialisation...')
-        self.camera = Camera()
+        self.camera = Camera([0.0, 0.0])
         self.camera.instancer = self
 
         print('[!] Clock Initialisation...')
