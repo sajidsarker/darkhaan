@@ -17,24 +17,30 @@ class Raycast:
                     delta_angle: float,
                     precision: float) -> None:
         _angle: float = self.direction - half_field_of_view
-        _cos: float = 0.0
-        _sin: float = 0.0
 
         for i in range(num_rays):
             _x: float = self.position[0]
             _y: float = self.position[1]
-            _cos = math.cos(math.radians(_angle)) / precision
-            _sin = math.sin(math.radians(_angle)) / precision
+            _cos: float = math.cos(math.radians(_angle)) / precision
+            _sin: float = math.sin(math.radians(_angle)) / precision
             _wall: int = 0
+
             while _wall == 0:
                 _x += _cos
                 _y += _sin
                 _wall = self.instancer.instancer.map.data['collisions'][int(math.floor(_y))][int(math.floor(_x))]
+
             _distance: float = math.sqrt(math.pow(self.position[0] - _x, 2) + math.pow(self.position[1] - _y, 2))
+
+            # Fish-eye effect correction
+            _distance = _distance * math.cos(math.radians(_angle - self.direction))
+
             _wall_height: float = math.floor(half_height / _distance)
+
             '''
-            
+            render
             '''
+
             _angle += delta_angle
 
     def update(self, position: List[float], direction: float) -> None:
