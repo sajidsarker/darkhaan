@@ -42,25 +42,13 @@ class Game:
 
         print('[!] Input Initialisation...')
         self.key_down = {
-            'k_left': False,
-            'k_right': False,
-            'k_up': False,
-            'k_down': False,
-            'k_accept': False
+            'k_left': False, 'k_right': False, 'k_up': False, 'k_down': False, 'k_accept': False
         }
         self.key_pressed = {
-            'k_left': False,
-            'k_right': False,
-            'k_up': False,
-            'k_down': False,
-            'k_accept': False
+            'k_left': False, 'k_right': False, 'k_up': False, 'k_down': False, 'k_accept': False
         }
         self.key_released = {
-            'k_left': False,
-            'k_right': False,
-            'k_up': False,
-            'k_down': False,
-            'k_accept': False
+            'k_left': False, 'k_right': False, 'k_up': False, 'k_down': False, 'k_accept': False
         }
 
         print('[!] Map Initialisation...')
@@ -103,18 +91,10 @@ class Game:
 
     def process_input(self) -> None:
         self.key_pressed = {
-            'k_left': False,
-            'k_right': False,
-            'k_up': False,
-            'k_down': False,
-            'k_accept': False
+            'k_left': False, 'k_right': False, 'k_up': False, 'k_down': False, 'k_accept': False
         }
         self.key_released = {
-            'k_left': False,
-            'k_right': False,
-            'k_up': False,
-            'k_down': False,
-            'k_accept': False
+            'k_left': False, 'k_right': False, 'k_up': False, 'k_down': False, 'k_accept': False
         }
 
         for event in pygame.event.get():

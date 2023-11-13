@@ -2,6 +2,9 @@
 
 from typing import List, Dict
 
+#MASSIVE TEMP REMOVE
+from ui.ui import *
+
 import os
 import pygame
 
@@ -18,19 +21,26 @@ class TextureCache:
         for i in range(len(_tex)):
             _fragment: List[str] = _tex[i].split('_')
             _index: List[str] = _fragment[0].split('/')
-            if _fragment[1].rfind('.png') > -1:
+
+            if _fragment[1].endswith('.png'):
+
                 if _index[len(_index) - 1] in self.data.keys():
+
                     if isinstance(self.data[_index[len(_index) - 1]], dict):
                         self.data[_index[len(_index) - 1]].update({
-                            int(_fragment[1].split('.')[0]): pygame.image.load(_tex[i])
+                            int(_fragment[1].split('.')[0]): pygame.image.load(_tex[i]).convert_alpha()
                         })
+
+                    '''
                     else:
                         self.data[_index[len(_index) - 1]] = {
-                            int(_fragment[1].split('.')[0]): pygame.image.load(_tex[i])
+                            int(_fragment[1].split('.')[0]): pygame.image.load(_tex[i]).convert_alpha()
                         }
+                    '''
+
                 else:
                     self.data[_index[len(_index) - 1]] = {
-                        int(_fragment[1].split('.')[0]): pygame.image.load(_tex[i])
+                        int(_fragment[1].split('.')[0]): pygame.image.load(_tex[i]).convert_alpha()
                     }
 
         print('[!] Texture Cache Initialised: {}'.format(self.data))
