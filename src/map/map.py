@@ -12,7 +12,7 @@ class Map:
     spawn_position: Tuple[int]
     data: Dict[str, List[List[int]]]
 
-    def __init__(self, filename: str) -> None:
+    def __init__(self, file_name: str) -> None:
         self.data = {
             'collisions': [],
             'fog': [],
@@ -20,10 +20,10 @@ class Map:
             'items': [],
             'agents': []
         }
-        self.load(filename)
+        self.load(file_name)
 
-    def load(self, filename: str) -> None:
-        _file = open(filename, 'r')
+    def load(self, file_name: str) -> None:
+        _file = open(file_name, 'r')
 
         self.id = int(_file.readline())
         self.width = int(_file.readline())

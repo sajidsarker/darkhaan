@@ -87,6 +87,7 @@ class Game:
         self.agent_manager.spawn(AgentPlayer, self.map.spawn_position[0] * DIMENSION, self.map.spawn_position[1] * DIMENSION, 180.0)
 
         print('[!] Conversation Tree Initialisation...')
+        # Consider future code modification to load conversations from a file as strings to be processed
         self.conversation_manager = ConversationManager(
             {
                 'conversation_0': {
@@ -147,8 +148,10 @@ class Game:
         self.camera.update(self.agent_manager.entities[0].get_position())
         self.conversation_manager.update()
 
+        '''
         if self.key_pressed['k_left'] == True:
             self.conversation_manager.play('conversation_0')
+        '''
 
     def render(self) -> None:
         self.screen.fill('teal')
@@ -168,7 +171,7 @@ class Game:
         pygame.display.flip()
 
 def main() -> None:
-    print('[!] Isfahan Engine: Launching ' + GAME + '-v' + VERSION)
+    print('[!] Isfahan Engine: Launching {}-v{}, created by {}.'.format(GAME, VERSION, AUTHOR))
     game = Game()
 
     print('[!] Main Loop Initialisation...')

@@ -41,6 +41,9 @@ class Raycast:
             '''
             render
             '''
+            #wall_column = textures[texture].subsurface(offset * TEXTURE_SCALE, 0, TEXTURE_SCALE, TEXTURE_HEIGHT)
+            #wall_column = pygame.transform.scale(wall_column, (SCALE, projected_height))
+            #sc.blit(wall_column, (ray * SCALE, HALF_HEIGHT - projected_height // 2))
 
             _angle += delta_angle
 
