@@ -44,6 +44,7 @@ class Camera:
             _cos: float = math.cos(math.radians(_angle)) / PRECISION
             _sin: float = math.sin(math.radians(_angle)) / PRECISION
 
+            '''
             if abs(_cos) > abs(_sin):
                 _sin /= abs(_cos)
                 _cos /= abs(_cos)
@@ -51,8 +52,7 @@ class Camera:
             else:
                 _cos /= abs(_sin)
                 _sin /= abs(_sin)
-
-            #print('{} {}'.format(_cos, _sin))
+            '''
 
             _wall: int = 0
 
@@ -71,10 +71,5 @@ class Camera:
             _texel = self.instancer.texture_cache.data['texture0'][0].subsurface((i % DIMENSION, 0.0), (1.0, DIMENSION))
             _texel = pygame.transform.scale(_texel, (1.0, _wall_height))
             screen.blit(_texel, (i, HALF_HEIGHT - _wall_height / 2))
-
-            '''
-            if i % 10 == 0:
-                pygame.draw.line(screen, WHITE, (self.position[0], self.position[1]), (_x * DIMENSION, _y * DIMENSION))
-            '''
 
             _angle += DELTA_ANGLE
