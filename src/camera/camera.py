@@ -10,9 +10,10 @@ RESOLUTION: Tuple[int, int] = (640, 480)
 HALF_WIDTH: float = RESOLUTION[0] * 0.5
 HALF_HEIGHT: float = RESOLUTION[1] * 0.5
 FIELD_OF_VIEW: float = 60.0
-HALF_FIELD_OF_VIEW: float = FIELD_OF_VIEW * 0.5
-NUM_RAYS: int = RESOLUTION[0]
-DELTA_ANGLE: float = FIELD_OF_VIEW / RESOLUTION[0]
+HALF_FIELD_OF_VIEW: float = FIELD_OF_VIEW / 2
+SCALE_FACTOR: int = 4
+NUM_RAYS: int = RESOLUTION[0] // SCALE_FACTOR
+DELTA_ANGLE: float = FIELD_OF_VIEW / NUM_RAYS
 PRECISION: float = 64.0
 DIMENSION: float = 64.0
 
@@ -69,7 +70,7 @@ class Camera:
             _wall_height: float = HALF_HEIGHT / _distance * DIMENSION * 2.0
 
             _texel = self.instancer.texture_cache.data['texture0'][0].subsurface((i % DIMENSION, 0.0), (1.0, DIMENSION))
-            _texel = pygame.transform.scale(_texel, (1.0, _wall_height))
-            screen.blit(_texel, (i, HALF_HEIGHT - _wall_height / 2))
+            _texel = pygame.transform.scale(_texel, (SCALE_FACTOR, _wall_height))
+            screen.blit(_texel, (i * SCALE_FACTOR, HALF_HEIGHT - _wall_height / 2))
 
             _angle += DELTA_ANGLE
