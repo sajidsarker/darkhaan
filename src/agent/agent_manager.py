@@ -28,4 +28,5 @@ class AgentManager:
             entity.update(delta_time)
 
     def render(self, screen) -> None:
-        self.sprites.draw(screen)
+        #self.sprites.draw(screen)
+        pass

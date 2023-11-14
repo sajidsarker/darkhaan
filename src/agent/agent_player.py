@@ -34,16 +34,16 @@ class AgentPlayer(Agent):
             self.set_velocity(0.0, 0.0, 0.0)
 
             if abs(_h) > 0:
-                self.set_velocity(0.0, 0.0, _h * 5.0)
+                self.set_velocity(0.0, 0.0, -_h * 5.0)
                 _v = 0
 
             if abs(_v) > 0:
-                _x: float = 8.0 * _v * math.cos(self.position[2] *  math.pi / -180.0)
-                _y: float = 8.0 * _v * math.sin(self.position[2] *  math.pi / -180.0)
+                _x: float = 4.0 * -_v * math.cos(self.position[2] *  math.pi / 180.0)
+                _y: float = 4.0 * -_v * math.sin(self.position[2] *  math.pi / 180.0)
                 _sx: int = int(self.position[0] / self.sprite.image_width)
                 _sy: int = int(self.position[1] / self.sprite.image_height)
-                _dx: int = int(_x / 8.0)
-                _dy: int = int(_y / 8.0)
+                _dx: int = int(_x / 4.0)
+                _dy: int = int(_y / 4.0)
 
                 if abs(_dx) > 0:
                     #print('X: {}->{}'.format(_sx, _dx))
