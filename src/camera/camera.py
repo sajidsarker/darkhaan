@@ -5,17 +5,16 @@ from typing import List, Tuple
 import math
 import pygame
 
-RENDER_DELAY: float = 30.0
 RESOLUTION: Tuple[int, int] = (640, 480)
 HALF_WIDTH: float = RESOLUTION[0] * 0.5
 HALF_HEIGHT: float = RESOLUTION[1] * 0.5
 FIELD_OF_VIEW: float = 60.0
 HALF_FIELD_OF_VIEW: float = FIELD_OF_VIEW / 2
-SCALE_FACTOR: int = 4
-NUM_RAYS: int = RESOLUTION[0] // SCALE_FACTOR
-DELTA_ANGLE: float = FIELD_OF_VIEW / NUM_RAYS
+SCALE_FACTOR: int = 2
 PRECISION: float = 64.0
 DIMENSION: float = 64.0
+NUM_RAYS: int = RESOLUTION[0] // SCALE_FACTOR
+DELTA_ANGLE: float = FIELD_OF_VIEW / NUM_RAYS
 
 BLACK = (  0,   0,   0)
 GREY  = (125, 125, 125)
