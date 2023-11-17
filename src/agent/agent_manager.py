@@ -5,6 +5,9 @@ import pygame
 from typing import List
 from agent.agent import *
 from agent.agent_player import *
+from agent.agent_npc import *
+
+DIMENSION: float = 64.0
 
 class AgentManager:
     instancer = None
@@ -18,6 +21,7 @@ class AgentManager:
         self.entities.append(instance(x, y, z))
         self.entities[len(self.entities)-1].instancer = self.instancer
         self.sprites.add(self.entities[len(self.entities)-1].sprite)
+        self.instancer.map.data['agents'][int(x // DIMENSION)][int(y // DIMENSION)] = self.entities[len(self.entities)-1]
         return self.entities[len(self.entities)-1]
 
     def despawn(self, instance: Agent) -> None:

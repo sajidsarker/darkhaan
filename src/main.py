@@ -73,6 +73,7 @@ class Game:
 
         print('[!] Agent(s) Initialisation...')
         self.agent_manager.spawn(AgentPlayer, self.map.spawn_position[0] * DIMENSION, self.map.spawn_position[1] * DIMENSION, 180.0)
+        self.agent_manager.spawn(AgentNPC, 1.0 * DIMENSION, 1.0 * DIMENSION, 0.0)
 
         print('[!] Conversation Tree Initialisation...')
         # Consider future code modification to load conversations from a file as strings to be processed
@@ -88,6 +89,7 @@ class Game:
             }
         )
         self.conversation_manager.instancer = self
+        self.agent_manager.entities[1].assign_conversation('conversation_0')
 
     def process_input(self) -> None:
         self.key_pressed = {
@@ -127,11 +129,6 @@ class Game:
         self.camera.update(self.agent_manager.entities[0].get_position())
         self.map.update(self.agent_manager.entities[0].get_position())
         self.conversation_manager.update()
-
-        '''
-        if self.key_pressed['k_left'] == True:
-            self.conversation_manager.play('conversation_0')
-        '''
 
     def render(self) -> None:
         self.screen.fill('teal')

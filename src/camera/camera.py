@@ -44,32 +44,29 @@ class Camera:
             _cos: float = math.cos(math.radians(_angle)) / PRECISION
             _sin: float = math.sin(math.radians(_angle)) / PRECISION
 
-            '''
-            if abs(_cos) > abs(_sin):
-                _sin /= abs(_cos)
-                _cos /= abs(_cos)
+            _hit: int = 0
+            _tex: int = 0
+            _npc: int = None
 
-            else:
-                _cos /= abs(_sin)
-                _sin /= abs(_sin)
-            '''
-
-            _wall: int = 0
-
-            while _wall == 0:
+            while _hit == 0:
                 _x += _cos
                 _y += _sin
-                _wall = self.instancer.map.data['collisions'][int(math.floor(_y))][int(math.floor(_x))]
+                _hit = self.instancer.map.data['collisions'][int(math.floor(_y))][int(math.floor(_x))]
 
-            _distance: float = math.sqrt(math.pow((self.position[0] + DIMENSION / 2.0) - _x * DIMENSION, 2) + math.pow((self.position[1] + DIMENSION / 2.0) - _y * DIMENSION, 2))
+            _tex = self.instancer.map.data['tiles'][int(math.floor(_y))][int(math.floor(_x))]
+            _npc = self.instancer.map.data['agents'][int(math.floor(_y))][int(math.floor(_x))]
 
-            # Fish-eye effect correction
-            _distance = _distance * math.cos(math.radians(_angle - self.position[2]))
+            if _hit == 1:
+                _distance: float = math.sqrt(math.pow((self.position[0] + DIMENSION / 2.0) - _x * DIMENSION, 2) + math.pow((self.position[1] + DIMENSION / 2.0) - _y * DIMENSION, 2))
 
-            _wall_height: float = HALF_HEIGHT / _distance * DIMENSION * 2.0
+                # Fish-eye effect correction
+                _distance = _distance * math.cos(math.radians(_angle - self.position[2]))
 
-            _texel = self.instancer.texture_cache.data['texture0'][0].subsurface((i % DIMENSION, 0.0), (1.0, DIMENSION))
-            _texel = pygame.transform.scale(_texel, (SCALE_FACTOR, _wall_height))
-            screen.blit(_texel, (i * SCALE_FACTOR, HALF_HEIGHT - _wall_height / 2))
+                _wall_height: float = HALF_HEIGHT / _distance * DIMENSION * 2.0
+
+                #_texel = self.instancer.texture_cache.data['texture0'][_tex].subsurface((i % DIMENSION, 0.0), (1.0, DIMENSION))
+                _texel = self.instancer.texture_cache.data['texture0'][0].subsurface((i % DIMENSION, 0.0), (1.0, DIMENSION))
+                _texel = pygame.transform.scale(_texel, (SCALE_FACTOR, _wall_height))
+                screen.blit(_texel, (i * SCALE_FACTOR, HALF_HEIGHT - _wall_height / 2))
 
             _angle += DELTA_ANGLE

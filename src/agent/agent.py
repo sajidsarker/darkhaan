@@ -38,7 +38,7 @@ class Agent:
         self.velocity[1] = vy
         self.velocity[2] = vz
 
-    def update(self) -> None:
+    def update(self, delta_time: float) -> None:
         for i in range(len(self.position)):
             self.position[i] += self.velocity[i]
 

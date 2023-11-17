@@ -43,8 +43,12 @@ class Map:
 
         for i in range(self.height):
             self.data['fog'].append([])
+            self.data['items'].append([])
+            self.data['agents'].append([])
             for j in range(self.width):
                 self.data['fog'][i].append(False)
+                self.data['items'][i].append(None)
+                self.data['agents'][i].append(None)
 
         self.reveal([self.spawn_position[0], self.spawn_position[1]])
 
