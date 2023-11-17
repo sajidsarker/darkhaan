@@ -14,9 +14,6 @@ class AgentPlayer(Agent):
                          image_width = DIMENSION,
                          image_height = DIMENSION)
 
-    def interact(self) -> None:
-        pass
-
     def update(self, delta_time: float) -> None:
         _h: int = 0
         _v: int = 0
@@ -43,10 +40,11 @@ class AgentPlayer(Agent):
                 _sx: int = int(self.position[0] // DIMENSION)
                 _sy: int = int(self.position[1] // DIMENSION)
 
-                print('x: {}; y: {}'.format(_sx + _dx, _sy + _dy))
-                if self.instancer.map.data['agents'][_sx + _dx][_sy + _dy] != None:
+                print('[?] Interacting... @({}, {})'.format(_sx + _dx, _sy + _dy))
+                if self.instancer.map.data['agents'][_sx + _dx][_sy + _dy] != None and self.instancer.conversation_manager.conversation_id == '':
                     _h = 0
                     _v = 0
+                    self.instancer.key_pressed['k_accept'] = False
                     self.instancer.map.data['agents'][_sx + _dx][_sy + _dy].interact()
 
             if abs(_h) > 0:
