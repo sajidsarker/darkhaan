@@ -2,7 +2,9 @@
 
 ## Version
 **Current:** `Alpha Version 0.2.0-a1`
+
 **Anticipated:** `Beta Version 0.5.0-b1`
+
 **Anticipated:** `Release Version 1.0.0`
 
 ## About
