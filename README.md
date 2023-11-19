@@ -1,9 +1,9 @@
 # Darkhaan
 
 ## Version
-- (current) Alpha Version 0.1.0-a1
-- (anticipated) Beta Version 0.5.0-b1
-- (anticipated) Release Version 1.0.0
+**Current:** `Alpha Version 0.2.0-a1`
+**Anticipated:** `Beta Version 0.5.0-b1`
+**Anticipated:** `Release Version 1.0.0`
 
 ## About
 **Darkhaan** is an open source role-playing game built using the **Isfahan Engine**. The **Isfahan Engine** is written entirely in Python and leverages the PyGame SDL2 framework.
@@ -16,7 +16,7 @@
 5. Quest-Based Progression
 
 ## Compiling
-In its current early alpha status, simply run `main.py` from **terminal**.
+In its current early alpha status, simply run `main.py` from `terminal`.
 
 ```python
 git clone https://github.com/sajidsarker/darkhaan.git

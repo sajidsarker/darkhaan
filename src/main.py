@@ -9,7 +9,7 @@ from conversation.conversation_manager import *
 from ui.ui import *
 
 GAME = 'Darkhaan'
-VERSION = '0.1.0-a1'
+VERSION = '0.2.0-a1'
 AUTHOR = '@sajidsarker'
 FRAMES_PER_SECOND: float = 60.0
 RESOLUTION: Tuple[int, int] = (640, 480)

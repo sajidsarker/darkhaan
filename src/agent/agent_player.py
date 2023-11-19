@@ -14,6 +14,20 @@ class AgentPlayer(Agent):
                          image_width = DIMENSION,
                          image_height = DIMENSION)
 
+    def interact(self) -> None:
+        _dx: int = int(math.cos(self.position[2] *  math.pi / 180.0))
+        _dy: int = int(math.sin(self.position[2] *  math.pi / 180.0))
+
+        _sx: int = int(self.position[0] // DIMENSION)
+        _sy: int = int(self.position[1] // DIMENSION)
+
+        print('[?] Interacting... @({}, {})'.format(_sx + _dx, _sy + _dy))
+        if self.instancer.map.data['agents'][_sy + _dy][_sx + _dx] != None and self.instancer.conversation_manager.conversation_id == '':
+            _h = 0
+            _v = 0
+            self.instancer.key_pressed['k_accept'] = False
+            self.instancer.map.data['agents'][_sy + _dy][_sx + _dx].interact()
+
     def update(self, delta_time: float) -> None:
         _h: int = 0
         _v: int = 0
@@ -34,18 +48,7 @@ class AgentPlayer(Agent):
             self.set_velocity(0.0, 0.0, 0.0)
 
             if self.instancer.key_pressed['k_accept'] == True:
-                _dx: int = int(math.cos(self.position[2] *  math.pi / 180.0))
-                _dy: int = int(math.sin(self.position[2] *  math.pi / 180.0))
-
-                _sx: int = int(self.position[0] // DIMENSION)
-                _sy: int = int(self.position[1] // DIMENSION)
-
-                print('[?] Interacting... @({}, {})'.format(_sx + _dx, _sy + _dy))
-                if self.instancer.map.data['agents'][_sx + _dx][_sy + _dy] != None and self.instancer.conversation_manager.conversation_id == '':
-                    _h = 0
-                    _v = 0
-                    self.instancer.key_pressed['k_accept'] = False
-                    self.instancer.map.data['agents'][_sx + _dx][_sy + _dy].interact()
+                self.interact()
 
             if abs(_h) > 0:
                 self.set_velocity(0.0, 0.0, -_h * 5.0)
