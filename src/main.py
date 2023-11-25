@@ -6,6 +6,8 @@ from camera.camera import *
 from texture.texture_cache import *
 from agent.agent_manager import *
 from conversation.conversation_manager import *
+from inventory.inventory_manager import *
+from attribute.attribute_manager import *
 from ui.ui import *
 
 GAME = 'Darkhaan'
@@ -91,6 +93,14 @@ class Game:
         self.conversation_manager.instancer = self
         self.agent_manager.entities[1].assign_conversation('conversation_0')
 
+        print('[!] Inventory Initialisation...')
+        self.inventory_manager = InventoryManager()
+        self.inventory_manager.instancer = self
+
+        print('[!] Attribute(s) Initialisation...')
+        self.attribute_manager = AttributeManager()
+        self.attribute_manager.instancer = self
+
     def process_input(self) -> None:
         self.key_pressed = {
             'k_left': False, 'k_right': False, 'k_up': False, 'k_down': False, 'k_accept': False
@@ -129,6 +139,7 @@ class Game:
         self.camera.update(self.agent_manager.entities[0].get_position())
         self.map.update(self.agent_manager.entities[0].get_position())
         self.conversation_manager.update()
+        self.attribute_manager.update()
 
     def render(self) -> None:
         self.screen.fill('teal')

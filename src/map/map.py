@@ -45,6 +45,7 @@ class Map:
             self.data['fog'].append([])
             self.data['items'].append([])
             self.data['agents'].append([])
+
             for j in range(self.width):
                 self.data['fog'][i].append(False)
                 self.data['items'][i].append(None)
@@ -58,8 +59,8 @@ class Map:
         pass
 
     def reveal(self, position: List[int]) -> None:
-        _x: int = int(position[0] / DIMENSION)
-        _y: int = int(position[1] / DIMENSION)
+        _x: int = int(position[0] // DIMENSION)
+        _y: int = int(position[1] // DIMENSION)
         self.data['fog'][_y][_x] = True
         self.data['fog'][max(_y - 1, 0)][_x] = True
         self.data['fog'][min(_y + 1, self.height - 1)][_x] = True
@@ -72,8 +73,8 @@ class Map:
     def render(self, position: List[int], screen) -> None:
         _w: int = 6
         _h: int = 4
-        _x: int = int(position[0] / DIMENSION)
-        _y: int = int(position[1] / DIMENSION)
+        _x: int = int(position[0] // DIMENSION)
+        _y: int = int(position[1] // DIMENSION)
         _offset: Tuple[float] = (16.0, 16.0)
 
         i, j = 0, 0

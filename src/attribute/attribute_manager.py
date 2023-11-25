@@ -7,27 +7,32 @@ from attribute.attribute import *
 from attribute.derived_attribute import *
 
 class AttributeManager:
+    '''
     attributes: Dict[str, Attribute]
     '''
-    strength, vigour, endurance et cetera
+    #strength, vigour, endurance et cetera
     '''
     consumable_attributes: Dict[int]
     '''
-    health, magic, experience
+    #health, magic, experience
     '''
     derived_attributes: Dict[str, DerivedAttribute]
     '''
-    health, magic
-    '''
+    #health, magic
 
-    level: int = 1
-    max_experience: List = [math.log(x + 1) for x in range(25)]
+    #level: int = 1
+    #max_experience: List = [math.log(x + 1) for x in range(25)]
 
-    def __init__(self, attribute_names: List[str], attribute_points: List[int]) -> None:
+    def __init__(self) -> None:
+    #def __init__(self, attribute_names: List[str], attribute_points: List[int]) -> None:
+        '''
         for i in range(len(attribute_points)):
             self.attributes[attribute_points[i]] = Attribute(attribute_names[i], attribute_points[i])
+        '''
+        pass
 
     def upgrade_level(self, attribute_points: List[int]) -> None:
+        '''
         for i in range(len(attribute_points)):
             self.level += attribute_points[i]
 
@@ -36,3 +41,8 @@ class AttributeManager:
 
         for derived_attribute in self.derived_attributes:
             self.derived_attributes[derived_attribute.get_name()].calculate_value()
+        '''
+        pass
+
+    def update(self):
+        pass

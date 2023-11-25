@@ -23,5 +23,7 @@ In its current early alpha status, simply run `main.py` from `terminal`.
 ```python
 git clone https://github.com/sajidsarker/darkhaan.git
 cd darkhaan/src
+python3 -m pip install --upgrade pip
+python3 -m pip install pygame
 python3 main.py
 ```
