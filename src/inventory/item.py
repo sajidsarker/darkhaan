@@ -10,6 +10,6 @@ ITEM_DATA = {
         'description': '',
         'price': 0,
         'damage': 0,
-        
+        #
     }
 }
